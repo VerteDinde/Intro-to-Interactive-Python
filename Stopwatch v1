@@ -8,7 +8,7 @@ import time
 # define global variables
 
 time = 0
-interval = 1000
+interval = 100
 stime = "0:00.0"
 
 # define helper function format that converts time
@@ -17,10 +17,10 @@ def format(t):
     global time
     global stime
 
-    a = time / 600 #this might be right
-    b = int(math.floor((time / 10 % 60) / 10)) #???
-    c = ((time % 60) / 10) #??? returns up to 5
-    d = int(time % 10) #correct
+    a = time / 600 #should be right
+    b = int(math.floor((time / 10 % 60) / 10)) #right
+    c = ((time % 60) / 10) #???wrong
+    d = int(time % 10) #right
     
     stime = str(a) + ":" + str(b) + str(c) + "." + str(d)
     return stime
@@ -33,13 +33,16 @@ def stop_button():
     timer.stop()
 
 def reset_button():
-    global time
+    global time, stime
+    #resets actual clock time
     time = 0
+    #resets printed string time
+    stime = "0:00:0"
 
 # define event handler for timer with 0.1 sec interval
 def tick():
     global time, stime
-    time += 0.1
+    time += 1
     
     format(time)
 
@@ -59,6 +62,6 @@ timer = simplegui.create_timer(interval, tick)
 
 # start frame
 frame.start()
-timer.start()
+timer.stop()
 
 # Please remember to review the grading rubric
