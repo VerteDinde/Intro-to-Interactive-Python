@@ -7,9 +7,9 @@ import time
 
 # define global variables
 
-time = 0.0
+time = 0
 interval = 1000
-stime = "0.0"
+stime = "0:00.0"
 
 # define helper function format that converts time
 # in tenths of seconds into formatted string A:BC.D
@@ -18,9 +18,9 @@ def format(t):
     global stime
 
     a = time / 600 #this might be right
-    b = int(math.floor((time / 10 % 60) / 10)) #this is right, but is B & C
-    c = ((time % 60) / 10)
-    d = time % 10 #this one is right
+    b = int(math.floor((time / 10 % 60) / 10)) #???
+    c = ((time % 60) / 10) #??? returns up to 5
+    d = int(time % 10) #correct
     
     stime = str(a) + ":" + str(b) + str(c) + "." + str(d)
     return stime
@@ -34,7 +34,7 @@ def stop_button():
 
 def reset_button():
     global time
-    time = 0.0
+    time = 0
 
 # define event handler for timer with 0.1 sec interval
 def tick():
