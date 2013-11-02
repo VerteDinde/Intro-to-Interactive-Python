@@ -10,16 +10,21 @@ import time
 time = 0
 interval = 100
 stime = "0:00.0"
+good_stops = 0
+total_stops = 0
+d = 0
+game_counter = str(good_stops) + "/" + str(total_stops)
 
 # define helper function format that converts time
 # in tenths of seconds into formatted string A:BC.D
 def format(t):
     global time
     global stime
+    global d
 
     a = time / 600 #should be right
     b = int(math.floor((time / 10 % 60) / 10)) #right
-    c = ((time % 60) / 10) #???wrong
+    c = ((time / 10 % 60) % 10) #???wrong
     d = int(time % 10) #right
     
     stime = str(a) + ":" + str(b) + str(c) + "." + str(d)
@@ -30,14 +35,31 @@ def start_button():
     timer.start()
 
 def stop_button():
-    timer.stop()
+    global good_stops, total_stops, game_counter
+    if timer.is_running():
+     timer.stop()
+     total_stops += 1
+     if d == 0:
+            good_stops += 1
+     else:
+     #just for debugging fun print to the console
+        good_stops += 0
+     
+     game_counter = str(good_stops) + "/" + str(total_stops)
 
 def reset_button():
     global time, stime
+    global good_stops, total_stops, game_counter
     #resets actual clock time
     time = 0
     #resets printed string time
     stime = "0:00:0"
+    
+    #resets game_counter
+    good_stops = 0
+    total_stops = 0
+    game_counter = str(good_stops) + "/" + str(total_stops)
+    return game_counter
 
 # define event handler for timer with 0.1 sec interval
 def tick():
@@ -49,19 +71,21 @@ def tick():
 # define draw handler
 def draw(canvas):
     canvas.draw_text(stime, [60, 110], 30, "FFFFFF")
+    canvas.draw_text(game_counter, [150, 30], 18, "FFFFFF")
     
 # create frame
 frame = simplegui.create_frame("Stopwatch Game", 200, 200)
 
 # register event handlers
 frame.set_draw_handler(draw)
-frame.add_button("Start", start_button)
-frame.add_button("Stop", stop_button)
-frame.add_button("Reset", reset_button)
+frame.add_button("Start", start_button, 150)
+frame.add_button("Stop", stop_button, 150)
+frame.add_button("Reset", reset_button, 150)
 timer = simplegui.create_timer(interval, tick)
 
 # start frame
 frame.start()
 timer.stop()
+timer.is_running()
 
 # Please remember to review the grading rubric
