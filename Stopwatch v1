@@ -51,6 +51,7 @@ def reset_button():
     global time, stime
     global good_stops, total_stops, game_counter
     #resets actual clock time
+    timer.stop()
     time = 0
     #resets printed string time
     stime = "0:00:0"
